@@ -19,9 +19,6 @@ const User = db.define('User', {
     },
     password: {
         type: DataTypes.STRING
-    },
-    lastConnection: {
-        type: DataTypes.DATE
     }
 });
 

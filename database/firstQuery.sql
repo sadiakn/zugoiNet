@@ -5,19 +5,18 @@ SELECT 'CREATE DATABASE zugoinet with owner brian'
 WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'zugoinet')\gexec
 
 /* Create the tables */
-CREATE TABLE Users
+CREATE TABLE "Users"
 (
     id serial,
-    name character varying(25) NOT NULL,
-    lastName character varying(25) NOT NULL,
-    email character varying(256) NOT NULL UNIQUE,
-    phone character varying(25) NOT NULL,
-    sex char NOT NULL,
-    password character varying(255) NOT NULL,
-    createdAt date NOT NULL,
-    updatedAt timestamp without time zone NOT NULL,
-    lastConnection timestamp without time zone NOT NULL,
-    PRIMARY KEY (idUser)
+    "name" character varying(25) NOT NULL,
+    "lastName" character varying(25) NOT NULL,
+    "email" character varying(256) NOT NULL UNIQUE,
+    "phone" character varying(25) NOT NULL,
+    "sex" char NOT NULL,
+    "password" character varying(255) NOT NULL,
+    "createdAt" date NOT NULL,
+    "updatedAt" timestamp without time zone NOT NULL,
+    PRIMARY KEY (id)
 );
 /*  Aqui falta algo!!! */
-ALTER TABLE users OWNER to brian;
+ALTER TABLE Users OWNER to brian;

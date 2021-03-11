@@ -12,7 +12,7 @@ class Server {
         this.dbConnection();
 
         //Path routes
-
+        this.userPath = '/users';
         //Routes
         this.routes();
     }
@@ -29,7 +29,7 @@ class Server {
 
     routes(){
         //Main Routes
-
+        this.app.use(this.userPath, require('../routes/users'));
     }
 
     listen(){
