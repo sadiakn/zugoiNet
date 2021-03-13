@@ -6,26 +6,29 @@ const getUsers = async (req, res) => {
 };
 
 const getUserById = async (req, res) => {
-  const { id } = req.params;
-  const user = await User.findByPk(id);
+  try {
+    const { id } = req.params;
+    const user = await User.findByPk(id);
 
-  //Validar si el id del usuario existe
-  if ( user ) {
+    //Validar si el id de usuario existe
+    if (user) {
       res.status(200).json(user);
-  }else {
-      res.status(400).json({
-          code: '404 Not Found',
-          message: `No existe un usuario con el id ${id}`,
+    } else {
+      res.status(404).json({
+        message: `No existe un usuario con el id ${id}`,
       });
-  };
-  
-  res.status(200).json(user);
+    }
+  } catch(error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Porfavor comunicarse con el administrador",
+    });
+  }
 };
 
 const createUser = async (req, res) => {
-  let { name, lastName, email, phone, sex, password } = req.body;
-
   try {
+    let { name, lastName, email, phone, sex, password } = req.body;
     //Verificar si el email existe
 
     //Cifrar la constraseña
@@ -44,6 +47,7 @@ const createUser = async (req, res) => {
       message: "Usuario resgistrado existosamente",
       data: user,
     });
+
   } catch (error) {
     console.log(error);
     res.json(500).json({
