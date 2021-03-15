@@ -3,22 +3,30 @@ const db = require('../../database/userConnection');
 
 const User = db.define('User', {
     name: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING(25),
+        allowNull: false
     },
     lastName: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING(25),
+        allowNull: false
     },
     email: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING(256),
+        allowNull: false,
+        unique: true
     },
     phone: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING(25),
+        allowNull: false,
+        unique: true
     },
     sex: {
-        type: DataTypes.CHAR
+        type: DataTypes.CHAR(1),
+        allowNull: false
     },
     password: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING(255),
+        allowNull: false
     }
 });
 
