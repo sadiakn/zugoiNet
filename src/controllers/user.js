@@ -56,8 +56,62 @@ const createUser = async (req, res) => {
   }
 };
 
+const deleteUser = async (req, res) => {
+  try {
+    let { name, lastName, email, phone, sex, password } = req.body;
+   
+    const user = await User.destroy({
+      name,
+      lastName,
+      email,
+      phone,
+      sex,
+      password,
+    });
+
+    res.status(201).json({
+      message: "Usuario eliminado existosamente",
+      data: user,
+    });
+
+  } catch (error) {
+    console.log(error);
+    res.json(500).json({
+      message: "Comunicarse con el administrador encargado",
+    });
+  }
+};
+
+const updateUser = async (req, res) => {
+  try {
+    let { name, lastName, email, phone, sex, password } = req.body;
+   
+    const user = await User.update({
+      name,
+      lastName,
+      email,
+      phone,
+      sex,
+      password,
+    });
+
+    res.status(201).json({
+      message: "Usuario actualizado existosamente",
+      data: user,
+    });
+
+  } catch (error) {
+    console.log(error);
+    res.json(500).json({
+      message: "Comunicarse con el administrador encargado",
+    });
+  }
+};
+
 module.exports = {
   getUsers,
   getUserById,
   createUser,
+  deleteUser,
+  updateUser,
 };
