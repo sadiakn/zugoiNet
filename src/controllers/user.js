@@ -1,8 +1,16 @@
 const User = require("../models/user");
+const bcryptjs = require('bcryptjs');
 
 const getUsers = async (req, res) => {
-  const users = await User.findAll();
-  res.status(200).json(users);
+  try {
+    const users = await User.findAll();
+    res.status(200).json(users);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      msg: "Por favor comunicarse con el administrador",
+    });
+  }
 };
 
 const getUserById = async (req, res) => {
@@ -15,24 +23,23 @@ const getUserById = async (req, res) => {
       res.status(200).json(user);
     } else {
       res.status(404).json({
-        message: `No existe un usuario con el id ${id}`,
+        msg: `No existe un usuario con el id ${id}`,
       });
     }
-  } catch(error) {
+  } catch (error) {
     console.log(error);
     res.status(500).json({
-      message: "Porfavor comunicarse con el administrador",
+      msg: "Por favor comunicarse con el administrador",
     });
   }
 };
 
 const createUser = async (req, res) => {
+  let { name, lastName, email, phone, sex, password } = req.body;
   try {
-    let { name, lastName, email, phone, sex, password } = req.body;
-    //Verificar si el email existe
-
     //Cifrar la constraseña
-
+    const salt = bcryptjs.genSaltSync(10);
+    password = bcryptjs.hashSync( password, salt);
     //Save user
     const user = await User.create({
       name,
@@ -44,14 +51,14 @@ const createUser = async (req, res) => {
     });
 
     res.status(201).json({
-      message: "Usuario resgistrado existosamente",
+      msg: "Usuario resgistrado existosamente",
       data: user,
     });
 
   } catch (error) {
     console.log(error);
     res.json(500).json({
-      message: "Comunicarse con el administrador encargado",
+      msg: "Comunicarse con el administrador encargado",
     });
   }
 };
