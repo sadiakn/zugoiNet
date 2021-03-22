@@ -11,7 +11,7 @@ CREATE TABLE "Users"
     "name" character varying(25) NOT NULL,
     "lastName" character varying(25) NOT NULL,
     "email" character varying(256) NOT NULL UNIQUE,
-    "phone" character varying(25) NOT NULL,
+    "phone" character varying(25) UNIQUE,
     "sex" char NOT NULL,
     "password" character varying(255) NOT NULL,
     "createdAt" date NOT NULL,

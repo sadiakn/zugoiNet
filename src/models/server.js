@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 
 const db = require('../../database/userConnection');
 
@@ -13,6 +14,8 @@ class Server {
 
         //Path routes
         this.userPath = '/users';
+
+        this.bodyPars();
         //Routes
         this.routes();
     }
@@ -25,6 +28,10 @@ class Server {
         } catch (error) {
             console.log('Error al conectar con la base de datos');
         }
+    }
+
+    bodyPars(){
+        this.app.use(bodyParser.json());
     }
 
     routes(){
