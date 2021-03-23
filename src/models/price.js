@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const db = require('../../database/userConnection'); 
+const db = require('../../database/userConnection');
 
 const Price = db.define('Price', {
     price: {

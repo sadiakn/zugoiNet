@@ -34,12 +34,38 @@ const getUserById = async (req, res) => {
   }
 };
 
+const login = async (req, res) => {
+  let { email, password } = req.body;
+  try {
+    const isValid = await User.findOne({
+      where: {
+        email: email,
+        password: password
+      }
+     });
+    if (isValid) {
+      res.status(200).json({
+        msg: "Las credenciales del login son validas",
+      })
+    } else {
+      res.status(404).json({
+        msg: "No se ha encontrado usuario con esas credenciales",
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      msg: "Por favor comuníquese con el administrador",
+    });
+  }
+};
+
 const createUser = async (req, res) => {
   let { name, lastName, email, phone, sex, password } = req.body;
   try {
     //Cifrar la constraseña
     const salt = bcryptjs.genSaltSync(10);
-    password = bcryptjs.hashSync( password, salt);
+    password = bcryptjs.hashSync(password, salt);
     //Save user
     const user = await User.create({
       name,
@@ -67,4 +93,5 @@ module.exports = {
   getUsers,
   getUserById,
   createUser,
+  login,
 };

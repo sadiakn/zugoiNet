@@ -1,4 +1,4 @@
-const { DataTypes } = require('sequelize'); 
+const { DataTypes } = require('sequelize');
 const db = require('../../database/userConnection');
 
 const Establishment = require('./establishment');
@@ -6,7 +6,7 @@ const Establishment = require('./establishment');
 const TypeOfEstablishment = db.define('TypeOfEstablishment', {
     typeOfEstablishmentName: {
         type: DataTypes.STRING(50),
-        allowNull: false, 
+        allowNull: false,
         unique: true
     }
 }, {

@@ -1,12 +1,12 @@
 const { DataTypes } = require('sequelize');
 const db = require('../../database/userConnection');
 
-const BranchOffice = db.define('BranchOffice', {
-    addressId: {
-        type: DataTypes.INTEGER(4),
+const Image = db.define('Image', {
+    url: {
+        type: DataTypes.STRING(255),
         allowNull: false
     },
-    establishmentId: {
+    productId: {
         type: DataTypes.INTEGER(4),
         allowNull: false
     }
@@ -14,4 +14,4 @@ const BranchOffice = db.define('BranchOffice', {
     timestamps: false
 });
 
-module.exports = BranchOffice;
+module.exports = Image;
