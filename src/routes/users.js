@@ -9,6 +9,7 @@ const {
     getUsers,
     getUserById,
     createUser,
+    login,
 } = require('../controllers/user');
 
 const router = Router();
@@ -26,7 +27,7 @@ router.post('/', [
 ],  createUser);
 //router.put('/', );
 //router.delete('/', );
-//router.post('/login', )
+router.post('/login', login);
 
 
 module.exports = router;
