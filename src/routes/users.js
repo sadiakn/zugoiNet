@@ -9,6 +9,8 @@ const {
     getUsers,
     getUserById,
     createUser,
+    updateUser,
+    deleteUser,
     login,
 } = require('../controllers/user');
 
@@ -25,8 +27,8 @@ router.post('/', [
     check('password', 'La constraseña debe tener almenos 8 caracteres').isLength({ min: 8 }),
     validateFields
 ],  createUser);
-//router.put('/', );
-//router.delete('/', );
+router.put('/:id', updateUser);
+router.delete('/:id', deleteUser);
 router.post('/login', login);
 
 

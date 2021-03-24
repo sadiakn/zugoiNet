@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const bcryptjs = require('bcryptjs');
 
+
 const getUsers = async (req, res) => {
   try {
     const users = await User.findAll();
@@ -89,11 +90,63 @@ const createUser = async (req, res) => {
   }
 };
 
+const updateUser = async (req, res, next) => {
+  try {
+    let { id } = req.params;
+     let {name, lastName, email, phone, sex, password } = req.body;
+     const user = await User.findByPk(id);
+     const salt = bcryptjs.genSaltSync(10);
+     password = bcryptjs.hashSync(password, salt);
+    
+     if (user) {
+
+       await User.update({
+       name: name,
+       lastName: lastName,
+       email: email,
+       phone: phone,
+       sex: sex,
+       password: password,
+     },{where: {id : id}});
+
+     res.status(200).json({
+       msg: `Usuario ${id} actualizado existosamente`,
+     });
+     
+   }else {
+     res.status(404).json({
+       msg: `No existe un usuario con el id ${id}`,
+     });
+   }
+   
+  }catch (error) {
+    console.log(error);
+    res.status(500).json({
+      msg: "Comunicarse con el administrador encargado",
+    });
+  }
+};
+
+const deleteUser = async (req, res) => {
+  try {
+    let { id } = req.params;
+
+    await User.destroy({where: {id : id}});
+    res.status(204).json();
+  }catch (error) {
+    console.log(error);
+    res.status(500).json({
+      msg: "Comunicarse con el administrador encargado",
+    });
+  }
+};
 
 
 module.exports = {
   getUsers,
   getUserById,
   createUser,
+  updateUser,
+  deleteUser,
   login,
 };
