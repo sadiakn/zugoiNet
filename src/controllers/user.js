@@ -35,32 +35,6 @@ const getUserById = async (req, res) => {
   }
 };
 
-const login = async (req, res) => {
-  let { email, password } = req.body;
-  try {
-    const isValid = await User.findOne({
-      where: {
-        email: email,
-        password: password
-      }
-     });
-    if (isValid) {
-      res.status(200).json({
-        msg: "Las credenciales del login son validas",
-      })
-    } else {
-      res.status(404).json({
-        msg: "No se ha encontrado usuario con esas credenciales",
-      });
-    }
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      msg: "Por favor comuníquese con el administrador",
-    });
-  }
-};
-
 const createUser = async (req, res) => {
   let { name, lastName, email, phone, sex, password } = req.body;
   try {
@@ -90,36 +64,25 @@ const createUser = async (req, res) => {
   }
 };
 
-const updateUser = async (req, res, next) => {
+const updateUser = async (req, res) => {
+  const { id } = req.params;
+  let { password, email, ...rest } = req.body;
   try {
-    let { id } = req.params;
-     let {name, lastName, email, phone, sex, password } = req.body;
-     const user = await User.findByPk(id);
-     const salt = bcryptjs.genSaltSync(10);
-     password = bcryptjs.hashSync(password, salt);
-    
-     if (user) {
+    const user = await User.findByPk(id);
 
-       await User.update({
-       name: name,
-       lastName: lastName,
-       email: email,
-       phone: phone,
-       sex: sex,
-       password: password,
-     },{where: {id : id}});
+    if (!user) {
+      return res.status(404).json({
+        msg: `No existe un usuario con el id ${id}`
+      });
+    }
+    await user.update(rest);
 
-     res.status(200).json({
-       msg: `Usuario ${id} actualizado existosamente`,
-     });
-     
-   }else {
-     res.status(404).json({
-       msg: `No existe un usuario con el id ${id}`,
-     });
-   }
-   
-  }catch (error) {
+    res.status(200).json({
+      msg: 'El usuario se actualizo',
+      data: user
+    });
+
+  } catch (error) {
     console.log(error);
     res.status(500).json({
       msg: "Comunicarse con el administrador encargado",
@@ -128,12 +91,19 @@ const updateUser = async (req, res, next) => {
 };
 
 const deleteUser = async (req, res) => {
+  const { id } = req.params;
   try {
-    let { id } = req.params;
+    const user = await User.findByPk(id);
+    if (!user) {
+      return res.status(404).json({
+        msg: `No existe un usuario con el id ${id}`
+      });
+    }
 
-    await User.destroy({where: {id : id}});
-    res.status(204).json();
-  }catch (error) {
+    //await user.update({ state: 0});
+    await user.destroy();
+    res.status(204).end();
+  } catch (error) {
     console.log(error);
     res.status(500).json({
       msg: "Comunicarse con el administrador encargado",
@@ -148,5 +118,4 @@ module.exports = {
   createUser,
   updateUser,
   deleteUser,
-  login,
 };

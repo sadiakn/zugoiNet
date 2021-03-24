@@ -11,7 +11,6 @@ const {
     createUser,
     updateUser,
     deleteUser,
-    login,
 } = require('../controllers/user');
 
 const router = Router();
@@ -29,7 +28,6 @@ router.post('/', [
 ],  createUser);
 router.put('/:id', updateUser);
 router.delete('/:id', deleteUser);
-router.post('/login', login);
 
 
 module.exports = router;

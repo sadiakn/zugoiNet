@@ -14,6 +14,7 @@ class Server {
 
         //Path routes
         this.userPath = '/users';
+        this.authPath = '/auth';
 
         this.bodyPars();
         //Routes
@@ -36,12 +37,14 @@ class Server {
 
     routes(){
         //Main Routes
+        this.app.use(this.authPath, require('../routes/auth'));
         this.app.use(this.userPath, require('../routes/users'));
     }
 
     listen(){
         this.app.listen(this.port, () => {
             console.log('This application in running on port ', this.port);
+            console.log('(Warning) The application does not work correctly.');
         });
     }
 }

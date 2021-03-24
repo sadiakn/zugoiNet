@@ -17,7 +17,6 @@ const User = db.define('User', {
     },
     phone: {
         type: DataTypes.STRING(25),
-        allowNull: false,
         unique: true
     },
     sex: {
