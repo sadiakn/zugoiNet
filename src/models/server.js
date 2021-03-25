@@ -44,7 +44,6 @@ class Server {
     listen(){
         this.app.listen(this.port, () => {
             console.log('This application in running on port ', this.port);
-            console.log('(Warning) The application does not work correctly.');
         });
     }
 }
