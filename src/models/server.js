@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 
 const db = require('../../database/userConnection');
 
@@ -12,7 +13,10 @@ class Server {
         this.dbConnection();
 
         //Path routes
+        this.userPath = '/users';
+        this.authPath = '/auth';
 
+        this.bodyPars();
         //Routes
         this.routes();
     }
@@ -27,9 +31,14 @@ class Server {
         }
     }
 
+    bodyPars(){
+        this.app.use(bodyParser.json());
+    }
+
     routes(){
         //Main Routes
-
+        this.app.use(this.authPath, require('../routes/auth'));
+        this.app.use(this.userPath, require('../routes/users'));
     }
 
     listen(){
