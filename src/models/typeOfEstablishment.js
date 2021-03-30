@@ -13,5 +13,7 @@ const TypeOfEstablishment = db.define('TypeOfEstablishment', {
     timestamps: false
 });
 
-TypeOfEstablishment.hasMany(Establishment, {foreignKey: 'typeOfEstablishmentId', sourceKey: 'id'});
-TypeOfEstablishment.belongsTo(Establishment, {foreignKey: 'typeOfEstablishmentId', sourceKey: 'id'});
+TypeOfEstablishment.hasMany(Establishment, { foreignKey: 'typeOfEstablishmentId', sourceKey: 'id' });
+//TypeOfEstablishment.belongsTo(Establishment, {foreignKey: 'typeOfEstablishmentId', sourceKey: 'id'});
+
+module.exports = TypeOfEstablishment;

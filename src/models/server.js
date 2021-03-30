@@ -6,8 +6,8 @@ const db = require('../../database/userConnection');
 class Server {
 
     constructor() {
-        this.app    =   express();
-        this.port   =   process.env.PORT;
+        this.app = express();
+        this.port = process.env.PORT;
 
         //Database Connection
         this.dbConnection();
@@ -15,6 +15,12 @@ class Server {
         //Path routes
         this.userPath = '/users';
         this.authPath = '/auth';
+        this.countriesPath = '/countries';
+        this.provincesPath = '/provinces';
+        this.typeOfEstablishmentsPath = '/type-of-establishments';
+        this.establishmentsPath = '/establishments';
+        this.branchOfficesPath = '/branch-offices';
+        this.categoriesPath = '/categories';
 
         this.bodyPars();
         //Routes
@@ -31,17 +37,23 @@ class Server {
         }
     }
 
-    bodyPars(){
+    bodyPars() {
         this.app.use(bodyParser.json());
     }
 
-    routes(){
+    routes() {
         //Main Routes
         this.app.use(this.authPath, require('../routes/auth'));
         this.app.use(this.userPath, require('../routes/users'));
+        this.app.use(this.countriesPath, require('../routes/country'));
+        this.app.use(this.provincesPath, require('../routes/province'));
+        this.app.use(this.typeOfEstablishmentsPath, require('../routes/typeOfEstablishment'));
+        this.app.use(this.establishmentsPath, require('../routes/establishment'));
+        this.app.use(this.branchOfficesPath, require('../routes/branchOffice'));
+        this.app.use(this.categoriesPath, require('../routes/category'));
     }
 
-    listen(){
+    listen() {
         this.app.listen(this.port, () => {
             console.log('This application in running on port ', this.port);
         });

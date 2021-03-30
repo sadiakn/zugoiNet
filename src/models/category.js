@@ -9,12 +9,13 @@ const Category = db.define('Category', {
         allowNull: false
     },
     description: {
-        type: DataTypes.STRING(255),
-        allowNull: false
+        type: DataTypes.STRING
     }
 }, {
     timestamps: false
 });
 
-Category.hasMany(Product, { foreignKey:'categoryId', sourceKey: 'id' });
-Category.belongsTo(Product, { foreignKey:'categoryId', sourceKey: 'id' });
+Category.hasMany(Product, { foreignKey: 'categoryId', sourceKey: 'id' });
+//Category.belongsTo(Product, { foreignKey: 'categoryId', sourceKey: 'id' });
+
+module.exports = Category;

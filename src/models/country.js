@@ -2,6 +2,7 @@ const { DataTypes } = require('sequelize');
 const db = require('../../database/userConnection');
 
 const Province = require('./province');
+const Address = require('./address');
 
 const Country = db.define('Country', {
     countryName: {
@@ -14,4 +15,7 @@ const Country = db.define('Country', {
 });
 
 Country.hasMany(Province, { foreignKey: 'countryId', sourceKey: 'id' });
-Address.belongsTo(Province, { foreignKey: 'countryId', sourceKey: 'id' });
+Country.hasMany(Address, { foreignKey: 'countryId', sourceKey: 'id' });
+//Address.belongsTo(Province, { foreignKey: 'countryId', sourceKey: 'id' });
+
+module.exports = Country;

@@ -3,16 +3,15 @@ const db = require('../../database/userConnection');
 
 const Address = db.define('Address', {
     countryId: {
-        type: DataTypes.INTEGER(4),
+        type: DataTypes.INTEGER,
         allowNull: false
     },
     provinceId: {
-        type: DataTypes.INTEGER(10),
+        type: DataTypes.INTEGER,
         allowNull: false
     },
     zipCode: {
-        type: DataTypes.STRING(20),
-        allowNull: false
+        type: DataTypes.STRING(20)
     },
     city: {
         type: DataTypes.STRING(50),

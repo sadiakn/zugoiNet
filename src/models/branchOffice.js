@@ -3,11 +3,11 @@ const db = require('../../database/userConnection');
 
 const BranchOffice = db.define('BranchOffice', {
     addressId: {
-        type: DataTypes.INTEGER(4),
+        type: DataTypes.INTEGER,
         allowNull: false
     },
     establishmentId: {
-        type: DataTypes.INTEGER(4),
+        type: DataTypes.INTEGER,
         allowNull: false
     }
 }, {

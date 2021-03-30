@@ -7,7 +7,7 @@ const Image = db.define('Image', {
         allowNull: false
     },
     productId: {
-        type: DataTypes.INTEGER(4),
+        type: DataTypes.INTEGER,
         allowNull: false
     }
 }, {

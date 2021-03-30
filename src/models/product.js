@@ -14,10 +14,12 @@ const Product = db.define('Product', {
         allowNull: false
     },
     categoryId: {
-        type: DataTypes.INTEGER(4),
+        type: DataTypes.INTEGER,
         allowNull: false
     }
 });
 
 Product.hasMany(Image, { foreignKey: 'productId', sourceKey: 'id' });
-Product.belongsTo(Image, { foreignKey: 'productId', sourceKey: 'id' });
+//Product.belongsTo(Image, { foreignKey: 'productId', sourceKey: 'id' });
+
+module.exports = Product;

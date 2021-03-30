@@ -10,12 +10,14 @@ const Establishment = db.define('Establishment', {
         unique: true
     },
     typeOfEstablishmentId: {
-        type: DataTypes.INTEGER(4),
+        type: DataTypes.INTEGER,
         allowNull: false
     }
 }, {
     timestamps: false
 });
 
-Establishment.hasMany(BranchOffice, { foreignKey: 'establishmentId', sourceKey: 'id '});
-Establishment.belongsTo(BranchOffice, { foreignKey: 'establishmentId', sourceKey: 'id '});
+//Establishment.hasMany(BranchOffice, { foreignKey: 'establishmentId', sourceKey: 'id ' });
+//Establishment.belongsTo(BranchOffice, { foreignKey: 'establishmentId', sourceKey: 'id ' });
+
+module.exports = Establishment;
