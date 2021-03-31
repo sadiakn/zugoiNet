@@ -34,6 +34,18 @@ const registerProvince = async (req, res) => {
     const { provinceName, countryId } = req.body;
 
     try {
+        const ifExist = await Province.findOne({
+            where: {
+                provinceName,
+                countryId,
+            }
+        });
+        if (ifExist) {
+            return res.status(400).json({
+                msg: `La provincia ${provinceName}, ya esta registrada en ese pais`
+            });
+        }
+
         const province = await Province.create({
             provinceName,
             countryId,
@@ -62,6 +74,18 @@ const updateProvince = async (req, res) => {
                 msg: `No se encontro la provincia con el id ${id}`
             });
         }
+        const ifExist = await Province.findOne({
+            where: {
+                provinceName: data.provinceName,
+                countryId: data.countryId
+            }
+        });
+        if (ifExist) {
+            return res.status(400).json({
+                msg: `La provincia ${provinceName}, ya esta registrada en ese pais`
+            });
+        }
+
         await province.update(data);
         res.status(200).json({
             msg: 'Provincia actualizada, ok',

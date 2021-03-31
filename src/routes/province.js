@@ -5,6 +5,10 @@ const { validateJWT } = require('../middlewares/validate-jwt');
 const { validateFields } = require('../middlewares/validate-fields');
 
 const {
+    provinceExist
+} = require('../helpers/db-validator');
+
+const {
     getProvinces,
     registerProvince,
     updateProvince

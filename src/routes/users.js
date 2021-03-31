@@ -4,7 +4,9 @@ const { check } = require('express-validator');
 const { validateFields } = require('../middlewares/validate-fields');
 const { validateJWT } = require('../middlewares/validate-jwt');
 
-const { emailExist } = require('../helpers/db-validator');
+const { emailExist,
+    phoneExist
+} = require('../helpers/db-validator');
 
 const {
     getUsers,
@@ -28,6 +30,7 @@ router.post('/', [
     check('lastName', 'El apellido es obligatorio').not().isEmpty(),
     check('email', 'El correo no es valido').isEmail(),
     check('email').custom(emailExist),
+    check('phone').custom(phoneExist),
     check('sex', 'El sexo es obligatorio').not().isEmpty(),
     check('password', 'La constraseña debe tener almenos 8 caracteres').isLength({ min: 8 }),
     check('countryId', 'El id del pais es obligatorio').not().isEmpty(),

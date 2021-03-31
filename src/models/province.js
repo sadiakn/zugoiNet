@@ -16,6 +16,6 @@ const Province = db.define('Province', {
 });
 
 Province.hasMany(Address, { foreignKey: 'provinceId', sourceKey: 'id' });
-//Province.belongsTo(Address, { foreignKey: 'provinceId', sourceKey: 'id' });
+Address.belongsTo(Province, { foreignKey: 'provinceId', sourceKey: 'id' });
 
 module.exports = Province;
