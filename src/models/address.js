@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const db = require('../../database/userConnection');
+const BranchOffice = require('./branchOffice');
 
 const User = require('./user');
 
@@ -24,6 +25,7 @@ const Address = db.define('Address', {
 });
 Address.hasMany(User, { foreignKey: 'addressId', sourceKey: 'id' });
 User.belongsTo(Address, { foreignKey: 'addressId', sourceKey: 'id' });
-
+Address.hasMany(BranchOffice, { foreignKey:'addressId', sourceKey:'id' });
+BranchOffice.belongsTo(Address, { foreignKey:'addressId', sourceKey:'id' });
 
 module.exports = Address;

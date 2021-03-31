@@ -2,6 +2,7 @@ const { DataTypes } = require('sequelize');
 const db = require('../../database/userConnection');
 
 const Image = require('./image');
+const PriceProductBranchOffice = require('./priceProductBranchOffice');
 
 const Product = db.define('Product', {
     barCode: {
@@ -20,6 +21,6 @@ const Product = db.define('Product', {
 });
 
 Product.hasMany(Image, { foreignKey: 'productId', sourceKey: 'id' });
-//Product.belongsTo(Image, { foreignKey: 'productId', sourceKey: 'id' });
+Product.hasMany(PriceProductBranchOffice, { foreignKey: 'productId', sourceKey: 'id' });
 
 module.exports = Product;
