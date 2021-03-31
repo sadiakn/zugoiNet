@@ -7,26 +7,6 @@ SELECT 'CREATE DATABASE <.env.DBNAME> with owner postgres'
 WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = '<.env.DBNAME>')\gexec
 
 /* Create the tables */
-CREATE TABLE "Users"
-(
-    id serial,
-    "name" character varying(25) NOT NULL,
-    "lastName" character varying(25) NOT NULL,
-    "email" character varying(256) NOT NULL UNIQUE,
-    "phone" character varying(25) UNIQUE,
-    "sex" char NOT NULL,
-    "password" character varying(255) NOT NULL,
-    "addressId" integer NOT NULL,
-    "createdAt" date NOT NULL,
-    "updatedAt" timestamp without time zone NOT NULL,
-    PRIMARY KEY (id),
-    CONSTRAINT users_addresses_fkey FOREIGN KEY ("addressId")
-        REFERENCES "Addresses" (id) MATCH SIMPLE
-        ON UPDATE CASCADE
-        ON DELETE RESTRICT
-        NOT VALID
-);
-GRANT INSERT, SELECT, UPDATE, DELETE ON TABLE "Users" TO zugoi_user;
 
 CREATE TABLE "Countries"(
     id SERIAL,
@@ -68,6 +48,27 @@ CREATE TABLE "Addresses"(
         NOT VALID
 );
 GRANT INSERT, SELECT, UPDATE ON TABLE "Addresses" TO zugoi_user;
+
+CREATE TABLE "Users"
+(
+    id serial,
+    "name" character varying(25) NOT NULL,
+    "lastName" character varying(25) NOT NULL,
+    "email" character varying(256) NOT NULL UNIQUE,
+    "phone" character varying(25) UNIQUE,
+    "sex" char NOT NULL,
+    "password" character varying(255) NOT NULL,
+    "addressId" integer NOT NULL,
+    "createdAt" date NOT NULL,
+    "updatedAt" timestamp without time zone NOT NULL,
+    PRIMARY KEY (id),
+    CONSTRAINT users_addresses_fkey FOREIGN KEY ("addressId")
+        REFERENCES "Addresses" (id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE RESTRICT
+        NOT VALID
+);
+GRANT INSERT, SELECT, UPDATE, DELETE ON TABLE "Users" TO zugoi_user;
 
 CREATE TABLE "TypeOfEstablishments"(
     id SERIAL,
