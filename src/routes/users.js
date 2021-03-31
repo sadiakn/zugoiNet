@@ -30,8 +30,14 @@ router.post('/', [
     check('email').custom(emailExist),
     check('sex', 'El sexo es obligatorio').not().isEmpty(),
     check('password', 'La constraseña debe tener almenos 8 caracteres').isLength({ min: 8 }),
+    check('countryId', 'El id del pais es obligatorio').not().isEmpty(),
+    check('provinceId', 'El id de la provincia es obligatorio').not().isEmpty(),
+    check('city', 'La ciudad es obligatoria').not().isEmpty(),
     validateFields
 ], createUser);
+
+
+
 router.put('/:id', [
     validateJWT
 ], updateUser);

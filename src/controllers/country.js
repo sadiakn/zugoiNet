@@ -33,7 +33,7 @@ const registerCountry = async (req, res) => {
 
 const updateCountry = async (req, res) => {
     const { id } = req.params;
-    const { countryName } = req.body;
+    const data = req.body;
 
     try {
         const country = await Country.findByPk(id);
@@ -43,7 +43,7 @@ const updateCountry = async (req, res) => {
                 msg: `No se encontro el páis con el id ${id}`
             });
         }
-        await country.update(countryName);
+        await country.update(data);
 
         res.status(200).json({
             msg: 'Páis actualizado, ok',

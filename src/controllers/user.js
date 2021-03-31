@@ -1,10 +1,17 @@
+const { sequelize } = require("../models/user");
 const User = require("../models/user");
+const Address = require('../models/address');
 const bcryptjs = require('bcryptjs');
 
 
 const getUsers = async (req, res) => {
   try {
-    const users = await User.findAll();
+    const users = await User.findAll({
+      attributes: ['id', 'name', 'lastName', 'email', 'phone', 'sex', 'createdAt', 'updatedAt'],
+      order: [
+        ['id', 'ASC']
+      ]
+    });
     res.status(200).json(users);
   } catch (error) {
     console.log(error);
@@ -17,7 +24,12 @@ const getUsers = async (req, res) => {
 const getUserById = async (req, res) => {
   try {
     const { id } = req.params;
-    const user = await User.findByPk(id);
+    const user = await User.findByPk(id, {
+      attributes: ['id', 'name', 'lastName', 'email', 'phone', 'sex', 'createdAt', 'updatedAt'],
+      order: [
+        ['id', 'ASC']
+      ]
+    });
 
     //Validar si el id de usuario existe
     if (user) {
@@ -36,12 +48,21 @@ const getUserById = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
-  let { name, lastName, email, phone, sex, password } = req.body;
+  let { name, lastName, email, phone, sex, password, countryId, provinceId, zipCode, city } = req.body;
+  const t = await sequelize.transaction();
   try {
     //Cifrar la constraseña
     const salt = bcryptjs.genSaltSync(10);
     password = bcryptjs.hashSync(password, salt);
     //Save user
+
+    const address = await Address.create({
+      countryId,
+      provinceId,
+      zipCode,
+      city,
+    }, { transaction: t });
+
     const user = await User.create({
       name,
       lastName,
@@ -49,15 +70,24 @@ const createUser = async (req, res) => {
       phone,
       sex,
       password,
-    });
+      addressId: address.id
+    }, { transaction: t });
 
+    await t.commit();
     res.status(201).json({
       msg: "Usuario resgistrado existosamente",
-      data: user,
+      data: {
+        id: user.id,
+        name: user.name,
+        lastName: user.lastName,
+        email: user.email,
+        phone: user.phone,
+        sex: user.sex
+      },
     });
-
   } catch (error) {
     console.log(error);
+    await t.rollback();
     res.json(500).json({
       msg: "Comunicarse con el administrador encargado",
     });
@@ -66,7 +96,7 @@ const createUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
   const { id } = req.params;
-  let { password, email, ...rest } = req.body;
+  let { password, email, addressId, ...rest } = req.body;
   try {
     const user = await User.findByPk(id);
 

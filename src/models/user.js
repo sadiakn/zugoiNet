@@ -26,6 +26,10 @@ const User = db.define('User', {
     password: {
         type: DataTypes.STRING(255),
         allowNull: false
+    },
+    addressId: {
+        type: DataTypes.INTEGER,
+        allowNull: false
     }
 });
 

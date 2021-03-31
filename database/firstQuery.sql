@@ -7,19 +7,25 @@ SELECT 'CREATE DATABASE <.env.DBNAME> with owner postgres'
 WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = '<.env.DBNAME>')\gexec
 
 /* Create the tables */
--CREATE TABLE "Users"
--(
--    id serial,
--    "name" character varying(25) NOT NULL,
--    "lastName" character varying(25) NOT NULL,
--    "email" character varying(256) NOT NULL UNIQUE,
--    "phone" character varying(25) UNIQUE,
--    "sex" char NOT NULL,
--    "password" character varying(255) NOT NULL,
--    "createdAt" date NOT NULL,
--    "updatedAt" timestamp without time zone NOT NULL,
--    PRIMARY KEY (id)
--);
+CREATE TABLE "Users"
+(
+    id serial,
+    "name" character varying(25) NOT NULL,
+    "lastName" character varying(25) NOT NULL,
+    "email" character varying(256) NOT NULL UNIQUE,
+    "phone" character varying(25) UNIQUE,
+    "sex" char NOT NULL,
+    "password" character varying(255) NOT NULL,
+    "addressId" integer NOT NULL,
+    "createdAt" date NOT NULL,
+    "updatedAt" timestamp without time zone NOT NULL,
+    PRIMARY KEY (id),
+    CONSTRAINT users_addresses_fkey FOREIGN KEY ("addressId")
+        REFERENCES "Addresses" (id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE RESTRICT
+        NOT VALID
+);
 GRANT INSERT, SELECT, UPDATE, DELETE ON TABLE "Users" TO zugoi_user;
 
 CREATE TABLE "Countries"(
@@ -63,22 +69,6 @@ CREATE TABLE "Addresses"(
 );
 GRANT INSERT, SELECT, UPDATE ON TABLE "Addresses" TO zugoi_user;
 
-CREATE TABLE "AddressesUsers"(
-    "userId" integer NOT NULL,
-    "addressId" integer NOT NULL,
-    CONSTRAINT addressesusers_users_fkey FOREIGN KEY ("userId")
-        REFERENCES "Users" (id) MATCH SIMPLE
-        ON UPDATE CASCADE
-        ON DELETE RESTRICT
-        NOT VALID,
-    CONSTRAINT addressesusers_addresses_fkey FOREIGN KEY ("addressId")
-        REFERENCES "Addresses" (id) MATCH SIMPLE
-        ON UPDATE CASCADE
-        ON DELETE RESTRICT
-        NOT VALID
-);
-GRANT INSERT, SELECT, UPDATE ON TABLE "AddressesUsers" TO zugoi_user;
-
 CREATE TABLE "TypeOfEstablishments"(
     id SERIAL,
     "typeOfEstablishmentName" character varying(50) UNIQUE NOT NULL,
@@ -120,7 +110,7 @@ GRANT INSERT, SELECT, UPDATE ON TABLE "BranchOffices" TO zugoi_user;
 CREATE TABLE "Categories"(
     id SERIAL,
     "categoryName" character varying(50) NOT NULL,
-    "description" character varying(255) NOT NULL,
+    "description" character varying(255),
     PRIMARY KEY(id)
 );
 GRANT INSERT, SELECT, UPDATE ON TABLE "Categories" TO zugoi_user;
@@ -132,6 +122,7 @@ CREATE TABLE "Products"(
     "productName" character varying(60) NOT NULL,
     "createdAt" date NOT NULL,
     "updatedAt" timestamp without time zone NOT NULL ,
+    "addressId" integer NOT NULL,
     PRIMARY KEY(id),
     CONSTRAINT products_categories_fkey FOREIGN KEY ("categoryId")
         REFERENCES "Categories" (id) MATCH SIMPLE
@@ -189,6 +180,22 @@ CREATE TABLE "UsersRols"(
     FOREIGN KEY ("rolId") REFERENCES "Rols" (id)
 );
 GRANT INSERT, SELECT, UPDATE ON TABLE "UsersRols" TO zugoi_user;
+
+CREATE TABLE "AddressesUsers"(
+    "userId" integer NOT NULL,
+    "addressId" integer NOT NULL,
+    CONSTRAINT addressesusers_users_fkey FOREIGN KEY ("userId")
+        REFERENCES "Users" (id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE RESTRICT
+        NOT VALID,
+    CONSTRAINT addressesusers_addresses_fkey FOREIGN KEY ("addressId")
+        REFERENCES "Addresses" (id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE RESTRICT
+        NOT VALID
+);
+GRANT INSERT, SELECT, UPDATE ON TABLE "AddressesUsers" TO zugoi_user;
 
 GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO zugoi_user;
 /*------------------------------------------^^^^^^^^^^^^^^^^^^^^^^------------------------------------------- Verified*/

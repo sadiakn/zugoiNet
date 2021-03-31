@@ -1,6 +1,8 @@
 const { DataTypes } = require('sequelize');
 const db = require('../../database/userConnection');
 
+const User = require('./user');
+
 const Address = db.define('Address', {
     countryId: {
         type: DataTypes.INTEGER,
@@ -20,5 +22,8 @@ const Address = db.define('Address', {
 }, {
     timestamps: false
 });
+Address.hasMany(User, { foreignKey: 'addressId', sourceKey: 'id' });
+User.belongsTo(Address, { foreignKey: 'addressId', sourceKey: 'id' });
+
 
 module.exports = Address;
