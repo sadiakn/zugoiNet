@@ -9,12 +9,19 @@ const {
     registerEstablishment,
     updateEstablishment
 } = require('../controllers/establishment');
+const { 
+    getBranchOfficesByEstablishment
+} = require('../controllers/branchOffice');
 
 const router = new Router();
 
 router.get('/', [
     validateJWT
 ], getEstablishments);
+
+router.get('/:establishmentId/branch-offices/', [
+    validateJWT,
+], getBranchOfficesByEstablishment);
 
 router.post('/', [
     validateJWT,

@@ -20,5 +20,9 @@ router.post('/', [
     validateFields
 ], registerBranchOffice);
 
+router.put('/:id', [
+    validateJWT
+], updateBrancOffice);
+
 module.exports = router;
 

@@ -13,7 +13,7 @@ const {
 const router = new Router();
 
 router.get('/', [
-    validateJWT
+   validateJWT
 ], getTypeOfEstablishments);
 
 router.post('/', [
