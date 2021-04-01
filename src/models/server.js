@@ -21,6 +21,8 @@ class Server {
         this.establishmentsPath = '/establishments';
         this.branchOfficesPath = '/branch-offices';
         this.categoriesPath = '/categories';
+        this.productsPath = '/products';
+        this.pricesPath = '/prices';
 
         this.bodyPars();
         //Routes
@@ -51,6 +53,9 @@ class Server {
         this.app.use(this.establishmentsPath, require('../routes/establishment'));
         this.app.use(this.branchOfficesPath, require('../routes/branchOffice'));
         this.app.use(this.categoriesPath, require('../routes/category'));
+        this.app.use(this.productsPath, require('../routes/product'));
+        this.app.use(this.pricesPath, require('../routes/price'));
+
     }
 
     listen() {
