@@ -5,11 +5,9 @@ const { validateJWT } = require('../middlewares/validate-jwt');
 const { validateFields } = require('../middlewares/validate-fields');
 
 const {
-    getImages,
     getProducts,
     getProductsById,
     registerProduct,
-    // registerImage,
     updateProduct
 } = require('../controllers/product');
 
@@ -22,10 +20,6 @@ router.get('/', [
 router.get('/:id', [
     validateJWT
 ], getProductsById);
-
-router.get('/', [
-    validateJWT
-], getImages);
 
 router.post('/', [
     validateJWT,

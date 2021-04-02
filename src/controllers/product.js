@@ -81,11 +81,9 @@ const updateProduct = async (req, res) => {
 }
 
 module.exports = {
-    getImages,
     getProducts,
     getProductsById,
     registerProduct,
-    // registerImage,
     updateProduct
 
 }
