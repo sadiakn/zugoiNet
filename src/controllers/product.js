@@ -1,18 +1,6 @@
 const Product = require('../models/product');
 const Image = require("../models/image");
 
-const getImages = async (req, res) => {
-    try {
-        const images = await Image.findAll();
-        res.status(200).json(images);
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({
-            msg: 'Por favor comunicarse con el administrador encargado'
-        });
-    }
-}; 
-
 const getProducts = async (req, res) => {
     try {
         const products = await Product.findAll();
@@ -30,11 +18,11 @@ const getProductsById = async (req, res) => {
         const { id } = req.params;
         const products = await Product.findByPk(id);
         if (products) {
-        res.status(200).json(products);
-        }else{
+            res.status(200).json(products);
+        } else {
             res.status(404).json({
                 msg: `No existe un producto con el id ${id}`,
-              });
+            });
         }
     } catch (error) {
         console.log(error);
@@ -65,27 +53,6 @@ const registerProduct = async (req, res) => {
         });
     }
 }
-
-// const registerImage = async (req, res) => {
-//     const { url, productId } = req.body;
-
-//     try {
-//         const image = await Image.create({
-//             url,
-//             productId
-//         });
-
-//         res.status(201).json({ 
-//             msg: 'Imagen guardada exitosamente',
-//             data: image,
-//         });
-//     } catch (error) {
-//         console.log(error);
-//         res.status(500).json({
-//             msg: 'Por favor comunicarse con el administrador encargado'
-//         });
-//     }
-// }
 
 const updateProduct = async (req, res) => {
     const { id } = req.params;
