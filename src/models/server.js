@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const fileUpload = require('express-fileupload');
 
 const db = require('../../database/userConnection');
 
@@ -23,10 +24,23 @@ class Server {
         this.categoriesPath = '/categories';
         this.productsPath = '/products';
         this.pricesPath = '/prices';
+        this.uploadsPath = '/uploads';
 
-        this.bodyPars();
+        //Meddlewares
+        this.middewares();
         //Routes
         this.routes();
+    }
+
+    middewares() {
+        this.app.use(bodyParser.json());
+
+        //Fileupload - Carga de Archivos
+        this.app.use(fileUpload({
+            useTempFiles: true,
+            tempFileDir: '/tmp/',
+            createParentPath: true
+        }));
     }
 
     async dbConnection() {
@@ -37,10 +51,6 @@ class Server {
         } catch (error) {
             console.log('Error al conectar con la base de datos');
         }
-    }
-
-    bodyPars() {
-        this.app.use(bodyParser.json());
     }
 
     routes() {
@@ -55,6 +65,7 @@ class Server {
         this.app.use(this.categoriesPath, require('../routes/category'));
         this.app.use(this.productsPath, require('../routes/product'));
         this.app.use(this.pricesPath, require('../routes/price'));
+        this.app.use(this.uploadsPath, require('../routes/uploads'));
 
     }
 

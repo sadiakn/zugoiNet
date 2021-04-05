@@ -1,3 +1,4 @@
+const { sequelize } = require('../models/image');
 const Product = require('../models/product');
 const Image = require("../models/image");
 
@@ -35,19 +36,42 @@ const getProductsById = async (req, res) => {
 const registerProduct = async (req, res) => {
     const { barCode, productName, categoryId } = req.body;
 
+    const t = await sequelize.transaction();
     try {
+        //Upload image
+        const { tempFilePath } = req.files.file;
+        const { secure_url } = await cloudinary.uploader.upload(tempFilePath);
         const product = await Product.create({
             barCode,
             productName,
             categoryId
-        });
+        }, { transaction: t });
+
+        const image = await Image.create({
+            url: secure_url,
+            productId: product.id
+        }, { transaction: t });
+
+        await t.commit();
 
         res.status(201).json({
             msg: 'Producto registrado exitosamente',
-            data: product,
+            data: {
+                id: product.id,
+                barCode: product.barCode,
+                categoryId: product.categoryId,
+                image: {
+                    url: image.url
+                }
+            }
         });
     } catch (error) {
         console.log(error);
+        await t.rollback();
+        const nameArr = secure_url.split('/');
+        const name = nameArr[nameArr.length - 1];
+        const [public_id] = name.split('.');
+        await cloudinary.uploader.destroy(public_id);
         res.status(500).json({
             msg: 'Por favor comunicarse con el administrador encargado'
         });

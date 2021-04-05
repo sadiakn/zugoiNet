@@ -2,6 +2,7 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 
 const { validateJWT } = require('../middlewares/validate-jwt');
+const { validateFileToUpload } = require('../middlewares/validate-file');
 const { validateFields } = require('../middlewares/validate-fields');
 
 const {
@@ -26,6 +27,7 @@ router.post('/', [
     check('barCode', 'El codigo de barra es obligatorio').not().isEmpty(),
     check('productName', 'El nombre del producto es obligatorio').not().isEmpty(),
     check('categoryId', 'La categoria del producto es obligatorio').not().isEmpty(),
+    validateFileToUpload,
     validateFields
 ], registerProduct);
 
