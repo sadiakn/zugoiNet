@@ -1,7 +1,9 @@
 
 const validateFileToUpload = (req, res, next) => {
     if (!req.files || Object.keys(req.files).length === 0 || !req.files.file) {
-        throw new Error('El file es obligatorio');
+        return res.status(400).json({
+            msg: 'El file es obligatorio, contiene una imagen del producto'
+        });
     }
 
     next();
@@ -9,13 +11,16 @@ const validateFileToUpload = (req, res, next) => {
 
 const validateExtensionFile = (req, res, next) => {
     validExtension = ['png', 'jpg', 'jpeg', 'gif'];
-    const { name } = req.files.file;
+    const { file } = req.files;
+    const { name } = file;
     const shortName = file.name.split('.');
     const extension = shortName[shortName.length - 1];
 
     //Validar la extension de las fotos
     if (!validExtension.includes(extension)) {
-        throw new Error('`La extensión ${extension} no es permitida - ${validExtension}`');
+        return res.status(400).json({
+            msg: `La extensión del archivo ${extension} no es permitida - ${validExtension}`
+        });
     }
 
     next();

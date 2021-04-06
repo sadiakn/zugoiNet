@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 const db = require('../../database/userConnection');
-const PriceProductBranchOffice = require('./priceProductBranchOffice');
+const PricesProductsBranchOffice = require('./pricesProductsBranchOffice');
 
 
 const BranchOffice = db.define('BranchOffice', {
@@ -16,7 +16,7 @@ const BranchOffice = db.define('BranchOffice', {
     timestamps: false
 });
 
-BranchOffice.hasMany(PriceProductBranchOffice, { foreignKey: 'branchOfficeId', sourceKey: 'id' });
-//BranchOffice.belongsTo(PriceProductBranchOffice, { foreignKey:'branchOfficeId', sourceKey:'id' });
+BranchOffice.hasMany(PricesProductsBranchOffice, { foreignKey: 'branchOfficeId', sourceKey: 'id' });
+PricesProductsBranchOffice.belongsTo(BranchOffice, { foreignKey: 'branchOfficeId', sourceKey: 'id' });
 
 module.exports = BranchOffice;

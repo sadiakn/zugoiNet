@@ -123,7 +123,6 @@ CREATE TABLE "Products"(
     "productName" character varying(60) NOT NULL,
     "createdAt" date NOT NULL,
     "updatedAt" timestamp without time zone NOT NULL ,
-    "addressId" integer NOT NULL,
     PRIMARY KEY(id),
     CONSTRAINT products_categories_fkey FOREIGN KEY ("categoryId")
         REFERENCES "Categories" (id) MATCH SIMPLE
@@ -150,7 +149,7 @@ CREATE TABLE "PricesProductsBranchOffices"(
     id SERIAL,
     "productId" integer NOT NULL,
     "branchOfficeId" integer NOT NULL,
-    "Price" money NOT NULL,
+    "price" money NOT NULL,
     PRIMARY KEY(id),
     CONSTRAINT pricesproductsbranchoffices_products_fkey FOREIGN KEY ("productId")
         REFERENCES "Products" (id) MATCH SIMPLE

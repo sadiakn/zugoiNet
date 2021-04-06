@@ -23,8 +23,6 @@ class Server {
         this.branchOfficesPath = '/branch-offices';
         this.categoriesPath = '/categories';
         this.productsPath = '/products';
-        this.pricesPath = '/prices';
-        this.uploadsPath = '/uploads';
 
         //Meddlewares
         this.middewares();
@@ -64,8 +62,6 @@ class Server {
         this.app.use(this.branchOfficesPath, require('../routes/branchOffice'));
         this.app.use(this.categoriesPath, require('../routes/category'));
         this.app.use(this.productsPath, require('../routes/product'));
-        this.app.use(this.pricesPath, require('../routes/price'));
-        this.app.use(this.uploadsPath, require('../routes/uploads'));
 
     }
 

@@ -1,6 +1,13 @@
 const { sequelize } = require('../models/image');
+const { Op } = require('sequelize');
+const cloudinary = require('cloudinary').v2;
+cloudinary.config(process.env.CLOUDINARY_URL);
+
 const Product = require('../models/product');
 const Image = require("../models/image");
+const PricesProductsBranchOffice = require('../models/pricesProductsBranchOffice');
+const BranchOffice = require('../models/branchOffice');
+const Establishment = require('../models/establishment');
 
 const getProducts = async (req, res) => {
     try {
@@ -33,6 +40,52 @@ const getProductsById = async (req, res) => {
     }
 }
 
+const getProductPricesByBarcode = async (req, res) => {
+    const { barCode } = req.body;
+
+    try {
+        const product = await Product.findOne({
+            where: {
+                barCode,
+            }
+        });
+        if (!product) {
+            return res.status(404).json({
+                msg: `No se encontro un producto con el código de barra ${barCode}`
+            });
+        }
+        const image = await Image.findOne({
+            where: {
+                productId: product.id
+            }
+        });
+        const branchOfficesWithPrice = await BranchOffice.findAll({
+            where: {
+                '$PricesProductsBranchOffices.productId$': product.id
+            },
+            include: [Establishment, PricesProductsBranchOffice]
+        });
+        const branchOffices = await BranchOffice.findAll({
+            include: [Establishment]
+        });
+        res.status(200).json({
+            product: {
+                id: product.id,
+                barCode: product.barCode,
+                productName: product.productName,
+                img: image.url
+            },
+            branchOfficesWithPrice: branchOfficesWithPrice,
+            branchOffices: branchOffices
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            msg: 'Por favor comunicarse con el administrador encargado'
+        });
+    }
+}
+
 const registerProduct = async (req, res) => {
     const { barCode, productName, categoryId } = req.body;
 
@@ -55,7 +108,7 @@ const registerProduct = async (req, res) => {
         await t.commit();
 
         res.status(201).json({
-            msg: 'Producto registrado exitosamente',
+            msg: 'Producto registrado, ok',
             data: {
                 id: product.id,
                 barCode: product.barCode,
@@ -68,33 +121,34 @@ const registerProduct = async (req, res) => {
     } catch (error) {
         console.log(error);
         await t.rollback();
-        const nameArr = secure_url.split('/');
-        const name = nameArr[nameArr.length - 1];
-        const [public_id] = name.split('.');
-        await cloudinary.uploader.destroy(public_id);
         res.status(500).json({
             msg: 'Por favor comunicarse con el administrador encargado'
         });
     }
 }
 
-const updateProduct = async (req, res) => {
-    const { id } = req.params;
-    const data = req.body;
+const registerProductPrice = async (req, res) => {
+    const { productId, branchOfficeId, price } = req.body;
 
     try {
-        const product = await Product.findByPk(id);
-
-        if (!product) {
-            return res.status(404).json({
-                msg: `No se encontro el producto con el id ${id}`
+        const productPrice = await PricesProductsBranchOffice.findOne({
+            where: {
+                [Op.and]: [{ productId: productId }, { branchOfficeId: branchOfficeId }]
+            }
+        });
+        if (productPrice) {
+            productPrice.update({ price, });
+            return res.status(200).json({
+                msg: 'Precio actualizado, ok'
             });
         }
-        await product.update(data);
-
-        res.status(200).json({
-            msg: 'producto actualizado correctamente',
-            data: product
+        // const pricesProductsBranchOffice = await PricesProductsBranchOffice.create({
+        //     productId,
+        //     branchOfficeId,
+        //     price,
+        // });
+        res.status(201).json({
+            msg: 'Precio registrado, ok'
         });
     } catch (error) {
         console.log(error);
@@ -107,7 +161,7 @@ const updateProduct = async (req, res) => {
 module.exports = {
     getProducts,
     getProductsById,
+    getProductPricesByBarcode,
     registerProduct,
-    updateProduct
-
+    registerProductPrice,
 }

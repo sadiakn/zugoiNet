@@ -1,5 +1,6 @@
 const User = require('../models/user');
 const Category = require('../models/category');
+const Product = require('../models/product');
 
 const emailExist = async (email = '') => {
     const ifExist = await User.findOne({
@@ -34,8 +35,20 @@ const categoryExist = async (categoryName = '') => {
     }
 }
 
+const productExist = async (barCode = '') => {
+    const ifExist = await Product.findOne({
+        where: {
+            barCode,
+        }
+    });
+    if (ifExist) {
+        throw new Error(`El producto con un codigo de barra ${barCode} ya esta registrado`);
+    }
+}
+
 module.exports = {
     emailExist,
     phoneExist,
-    categoryExist
+    categoryExist,
+    productExist
 }
