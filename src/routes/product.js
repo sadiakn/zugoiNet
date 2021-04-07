@@ -25,7 +25,7 @@ router.get('/:id', [
     validateJWT
 ], getProductsById);
 
-router.get('/prices/branch-offices', [
+router.post('/prices/branch-offices', [
     validateJWT,
     check('barCode', 'El codigo de barra es obligatorio').not().isEmpty(),
     validateFields
