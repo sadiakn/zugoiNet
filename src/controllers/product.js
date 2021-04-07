@@ -8,6 +8,7 @@ const Image = require("../models/image");
 const PricesProductsBranchOffice = require('../models/pricesProductsBranchOffice');
 const BranchOffice = require('../models/branchOffice');
 const Establishment = require('../models/establishment');
+const Address = require('../models/address');
 
 const getProducts = async (req, res) => {
     try {
@@ -66,7 +67,7 @@ const getProductPricesByBarcode = async (req, res) => {
             include: [Establishment, PricesProductsBranchOffice]
         });
         const branchOffices = await BranchOffice.findAll({
-            include: [Establishment]
+            include: [Establishment, Address]
         });
         res.status(200).json({
             product: {
@@ -142,11 +143,11 @@ const registerProductPrice = async (req, res) => {
                 msg: 'Precio actualizado, ok'
             });
         }
-        // const pricesProductsBranchOffice = await PricesProductsBranchOffice.create({
-        //     productId,
-        //     branchOfficeId,
-        //     price,
-        // });
+        const pricesProductsBranchOffice = await PricesProductsBranchOffice.create({
+            productId,
+            branchOfficeId,
+            price,
+        });
         res.status(201).json({
             msg: 'Precio registrado, ok'
         });
