@@ -64,7 +64,7 @@ const getProductPricesByBarcode = async (req, res) => {
             where: {
                 '$PricesProductsBranchOffices.productId$': product.id
             },
-            include: [Establishment, PricesProductsBranchOffice]
+            include: [Establishment, Address, PricesProductsBranchOffice]
         });
         const branchOffices = await BranchOffice.findAll({
             include: [Establishment, Address]
