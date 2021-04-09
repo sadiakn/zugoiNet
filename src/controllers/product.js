@@ -61,6 +61,9 @@ const getProductPricesByBarcode = async (req, res) => {
             }
         });
         const branchOfficesWithPrice = await BranchOffice.findAll({
+            order: [
+                [{ model: PricesProductsBranchOffice }, 'price', 'ASC']
+            ],
             where: {
                 '$PricesProductsBranchOffices.productId$': product.id
             },
